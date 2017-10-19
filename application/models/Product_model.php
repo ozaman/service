@@ -39,11 +39,14 @@ public function querydata2($params){
        "a.aum_to",
        "a.place_default",
        "a.place_default_to",
-       "a.area,
-       a.code,
-       a.cost_a,
-       a.cost_a_sell,
-       a.cost_a_nett");
+       "a.area",
+       "a.code",
+       "a.cost_a",
+       "a.cost_a_sell",
+       "a.cost_a_nett",
+       "a.all_area",
+       "a.pier_from",
+       "a.pier_to");
       /* ,
        g.id as id_typearea,
        g.title*/
@@ -54,17 +57,19 @@ public function querydata2($params){
 	   $data_find = array();
        $data_not_find = array();
        
-      	$this->db->select('pro');
+      	$this->db->select('pro,pier');
 		$this->db->from('web_transferplace_new'); 
 		$this->db->where('id',$from);
 		$query = $this->db->get(); 
 		$data_pro_from = $query->row()->pro;
+		$data_pier_from = $query->row()->pier;
 		
-		$this->db->select('pro');
+		$this->db->select('pro,pier');
 		$this->db->from('web_transferplace_new'); 
 		$this->db->where('id',$to);
 		$query = $this->db->get(); 
 		$data_pro_to = $query->row()->pro;
+		$data_pier_to = $query->row()->pier;
        
 /*       $data_pro_from = $params['stay_from'];
 	   $data_pro_to = $params['stay_to'];*/
@@ -144,6 +149,8 @@ public function querydata2($params){
 		$data_return['aum_to'] = $data_aum_to;
 		$data_return['stay'] = $data_pro_from;
 		$data_return['stay_to'] = $data_pro_from;
+		$data_return['pier_to'] = $data_pier_to;
+		$data_return['pier_from'] = $data_pier_from;
 		
 //		if not find product query Nearby Products
 		$arry_check_private = array();
@@ -153,26 +160,51 @@ public function querydata2($params){
 				}	
 			}
 			$data_find_private = array();
-//			if(sizeof($arry_check_private)==0){
+
+	
+
+/*if($data_filter1[$key]->pier_from==$data_pier_from){
+	
+}*/
+			
 				foreach($data_filter1 as $key=>$data){
-					if($data_filter1[$key]->area=="Out"){
-							if($data_filter1[$key]->stay==$data_pro_from and $data_filter1[$key]->stay_to==$data_pro_to and $data_filter1[$key]->place_default_to==$to and $data_filter1[$key]->place_default==""){
-								if($data_filter1[$key]->aum_from=="" or $data_filter1[$key]->aum_from==0){
-									array_push($data_find,$data);
-								}
+					if($data_filter1[$key]->all_area==1){
+						
+						if($data_filter1[$key]->area=="Out"){
+								if($data_filter1[$key]->stay==$data_pro_from and $data_filter1[$key]->stay_to==$data_pro_to and $data_filter1[$key]->place_default_to==$to and $data_filter1[$key]->place_default==""){
+									if($data_filter1[$key]->aum_from=="" or $data_filter1[$key]->aum_from==0){
+										array_push($data_find,$data);
+									}
+							}
 						}
-					}else if($data_filter1[$key]->area=="In"){
-						if($data_filter1[$key]->stay==$data_pro_from and $data_filter1[$key]->stay_to==$data_pro_to and $data_filter1[$key]->place_default==$from and $data_filter1[$key]->place_default_to==""){
-								if($data_filter1[$key]->aum_to=="" or $data_filter1[$key]->aum_from==0){
-									array_push($data_find,$data);
-								}
+						else if($data_filter1[$key]->area=="In"){
+							if($data_filter1[$key]->stay==$data_pro_from and $data_filter1[$key]->stay_to==$data_pro_to and $data_filter1[$key]->place_default==$from and $data_filter1[$key]->place_default_to==""){
+									if($data_filter1[$key]->aum_to=="" or $data_filter1[$key]->aum_from==0){
+										array_push($data_find,$data);
+									}
+							}
+						
 						}
-					
-					}
-					
-					
+						/*else{
+				
+	if($data_filter1[$key]->stay==$data_pro_from and $data_filter1[$key]->stay_to==$data_pro_to and $data_filter1[$key]->place_default=="" and $data_filter1[$key]->place_default_to=="" and ($data_filter1[$key]->aum_from=="" or $data_filter1[$key]->aum_from==0) and ($data_filter1[$key]->aum_to=="" or $data_filter1[$key]->aum_to==0))
+							{
+								if($data_filter1[$key]->pier_to==$data_pier_to){
+									if($data_filter1[$key]->aum_to=="" or $data_filter1[$key]->aum_from==0){
+										array_push($data_find,$data);
+									}
+								}	
+							}
+						
+						}*/
+
+							
+							
+							
+							}	
 				}
-//			}
+				
+				
 			
 			
 	    $car_topic = array();
