@@ -87,7 +87,7 @@ if(($params['lat_f']==!"" or $params['lng_f']==!NULL) and ($params['lat_t']==!""
 		$detail['aum'] = '{"aum_from":"'.$aum_from.'","aum_to":"'.$aum_to.'"}';
 		$detail['place'] = '{"place_from":"'.$place_from.'","place_to":"'.$place_to.'"}';
 		
-//		$result = $this->productMain($select,$aum_from,$aum_to,$place_from,$place_to,$data_find);			
+		$result = $this->productMain($select,$aum_from,$aum_to,$place_from,$place_to,$data_find);			
 		
 		/*$car_topic = array();
 		$car_topic_result = array();

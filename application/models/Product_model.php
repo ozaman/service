@@ -51,11 +51,18 @@ public function querydata2($params){
        g.id as id_typearea,
        g.title*/
        $not = 'Service';
+
+
        $from = $params['from'];
 	   $to = $params['to'];
+
+
 	   $data_filter1 = array();
 	   $data_find = array();
        $data_not_find = array();
+
+
+
        
       	$this->db->select('pro,pier');
 		$this->db->from('web_transferplace_new'); 
@@ -168,10 +175,11 @@ public function querydata2($params){
 }*/
 			
 				foreach($data_filter1 as $key=>$data){
-					if($data_filter1[$key]->all_area==1){
+					// ($data_filter1[$key]->all_area==1 and $data_filter1[$key]->pier_from != 1) and $data_filter1[$key]->pier_to != 1)
+					if($data_filter1[$key]->all_area==1 ){
 						
 						if($data_filter1[$key]->area=="Out"){
-								if($data_filter1[$key]->stay==$data_pro_from and $data_filter1[$key]->stay_to==$data_pro_to and $data_filter1[$key]->place_default_to==$to and $data_filter1[$key]->place_default==""){
+								if(($data_filter1[$key]->stay==$data_pro_from and $data_filter1[$key]->stay_to==$data_pro_to) and ($data_filter1[$key]->place_default_to==$to and $data_filter1[$key]->place_default=="")){
 									if($data_filter1[$key]->aum_from=="" or $data_filter1[$key]->aum_from==0){
 										array_push($data_find,$data);
 									}
@@ -185,6 +193,13 @@ public function querydata2($params){
 							}
 						
 						}
+						else if($data_filter1[$key]->area !="In" and $data_filter1[$key]->area!="Out"){
+							if($data_filter1[$key]->stay==$data_pro_from and $data_filter1[$key]->stay_to==$data_pro_to){
+									//if($data_filter1[$key]->aum_from==$data_aum_from or $data_filter1[$key]->aum_from==$data_aum_to){
+										array_push($data_find,$data);
+									}
+						}
+
 						/*else{
 				
 	if($data_filter1[$key]->stay==$data_pro_from and $data_filter1[$key]->stay_to==$data_pro_to and $data_filter1[$key]->place_default=="" and $data_filter1[$key]->place_default_to=="" and ($data_filter1[$key]->aum_from=="" or $data_filter1[$key]->aum_from==0) and ($data_filter1[$key]->aum_to=="" or $data_filter1[$key]->aum_to==0))
@@ -201,7 +216,20 @@ public function querydata2($params){
 							
 							
 							
-							}	
+							}
+						// 	else if($data_filter1[$key]->pier_from == 1 and $data_filter1[$key]->pier_from == 1){
+						// 		if ($data_filter1[$key]->pier_from == 1 and $data_filter1[$key]->pier_to == 0) {			
+						// 			array_push($data_find,$data);
+						// 		}
+						// 		else if ($data_filter1[$key]->pier_to == 1 and $data_filter1[$key]->pier_from == 0) {			
+						// 			array_push($data_find,$data);
+						// 		}
+						// 		else{
+						// 			array_push($data_find,$data);
+						// 		}
+										
+							
+						// }	
 				}
 				
 				
