@@ -16,11 +16,12 @@ public function index()
 		
 			$resp = $this->Product_realtime_model->getProduct($params);
 //			json_output($resp['status'],$resp['response']);
-			$fromto = json_encode($resp);
+			//$fromto = json_encode($resp);
 			//echo $fromto;
-			$resp2 = $this->Product_model->querydata2($resp);
+			json_output($resp['status'],$resp['response']);
+			//$resp2 = $this->Product_model->querydata2($resp);
 			//echo json_encode($resp2[response][0]);
-			json_output($resp2['status'],$resp2['response'][0]);	
+			//json_output($resp2['status'],$resp2['response'][0]);	
 		}else{
 			
 			echo "Please check your json from";

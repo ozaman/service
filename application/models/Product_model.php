@@ -20,6 +20,7 @@ public function querydata2($params){
        "b.topic_en AS car_topic_en",
        "b.topic_th AS car_topic_th",
        "b.topic_cn AS car_topic_cn",
+       "b.id AS pax_id",
        "b.pax AS pax_en",
        "b.pax_th AS pax_th",
        "b.pax_cn AS pax_cn",
@@ -235,64 +236,69 @@ public function querydata2($params){
 				
 			
 			
-	    $car_topic = array();
+	    $car_topic = array();		
 		$car_topic_result = array();
-		$sub = array();
+		$sub = array();		
+		$datatopic = array();
 		
 		foreach($data_find as $key=>$row){
-			array_push($car_topic,$row->car_topic_en);
-				
-			}
+				array_push($car_topic,$row->car_topic_en);	
+		}
 		$num_cartype = array_unique($car_topic);	
 		
 		$car_topic_lang = array('en','cn','th');
 
-		foreach ($car_topic_lang as $key=>$value){
-			
+				
 			foreach($data_find as $key2=>$row){
-				
-				if($value=="en"){
-					$sub[$key2] = $row->car_topic_en;
-				}else if($value=="cn"){
-					$sub[$key2] = $row->car_topic_cn;
-				}else if($value=="th"){
-					$sub[$key2] = $row->car_topic_th;
-				}
-				
+					$sub[$key2] = $row->pax_id;
 			}	
 	
-			$sub_unique = array_unique($sub);	
-			$q[$value] = $sub_unique;
-		}
-	
-	$final_arr = array();
-	foreach ($q as $key=>$value){
-		
-		foreach($value as $key2=>$row2){
-			if($key=='en'){
-				$en[] = $row2;
-			}
-			else if($key=='cn'){
-				$cn[] = $row2;
-			}
-			else if($key=='th'){
-				$th[] = $row2;
-			}
-			
-		}
-	}
-	array_push($final_arr,$en);
-	array_push($final_arr,$cn);
-	array_push($final_arr,$th);		
-			
-$arrayname['status'] =  "202";			
-$arrayname['return'] =  $data_return;			
-$arrayname['messge'] =  "Load Data Success";
-$arrayname['cartype'] =  $final_arr;
+			$sub_unique = array_unique($sub);
 
-$arrayname['data_find_private'] =  $data_find_private;
-$arrayname['size'] =  sizeof($data_find);
-$arrayname['data1'] =  $data_find;
+							
+			foreach($sub_unique as $i2=>$value2){
+					foreach($data_find as $i=>$row){
+					if ($row->pax_id == $value2 && $value2 != null) {
+						$datatopic[$i2] = $row;
+						
+					}
+				}
+			}
+
+
+
+			foreach ($car_topic_lang as $key=>$value){	
+				foreach($sub_unique as $key2=>$value2){
+					foreach($data_find as $key4=>$row){				
+						if ($row->pax_id == $value2) {
+							if($value=="en"){
+								$q[$key4] = $row->car_topic_en;
+								$subpax[$key4] = $row->pax_en;
+								
+							}else if($value=="cn"){
+								$q[$key4] = $row->car_topic_cn;
+								$subpax[$key4] = $row->pax_cn;
+								
+							}else if($value=="th"){
+								$q[$key4] = $row->car_topic_th;
+								 $subpax[$key4] = $row->pax_th;
+								
+							}
+						}
+					}	
+				}
+			}
+	
+	
+		
+			
+		$arrayname['status'] =  "202";			
+		$arrayname['messge'] =  "Load Data Success";
+		$arrayname['return'] =  $return;
+		$arrayname['cartype'] =  $final_arr ;
+		$arrayname['car_topic'] = $datatopic;
+		$arrayname['size'] =  sizeof($data_find);
+		$arrayname['data1'] =  $data_find;
 
 
 			
@@ -451,23 +457,7 @@ public function querydata_service($params){
 		$return['to'] = $to;
 		$data_find = array();
 		$data_null = array();
-		/*foreach ($select as $key => $value){
-				$this->db->select($value);
-			}	
-			$this->db->from('web_transferproduct a'); 
-			$this->db->join('web_car b', 'b.id=a.cartype', 'left');
-			$this->db->join('web_province c', 'c.id=a.stay', 'left');
-			$this->db->join('web_province d', 'd.id=a.stay_to', 'left');
-			$this->db->join('web_gallerycar e', 'e.category=b.car_model', 'left');
-			$this->db->join('web_transferproduct_utf f', 'f.id=a.id', 'left');
-//			$this->db->join('web_typearea g', 'g.title = a.area', 'left');
-			$this->db->where('a.stay ',''.$from.'');
-			$this->db->where('a.stay_to ',''.$to.'');
-			$this->db->where('a.area = "Service" OR a.area = "Service_day"');
-			$this->db->where('b.id !=',null);
-			$this->db->group_by('a.id');
-			$query = $this->db->get(); 
-			*/
+		
 			
 			
   $query  =   "SELECT f.topic_en AS topic_en,
@@ -486,10 +476,11 @@ public function querydata_service($params){
 		       b.topic_en AS car_topic_en,
 		       b.topic_th AS car_topic_th,
 		       b.topic_cn AS car_topic_cn,
+		       b.id AS pax_id,
 		       b.pax AS pax_en,
 		       b.pax_th AS pax_th,
 		       b.pax_cn AS pax_cn,
-		       b.topic AS topic_car,
+		       b.topic AS topic_car,		       
 		       b.car_model,
 		       c.id AS province_id,
 		       c.front_transfer AS front_transfer,
@@ -521,78 +512,86 @@ public function querydata_service($params){
 			$query2 = $this->db->query($query); 
 
        		if($query2->num_rows() > 0) {
-			      foreach($query2->result() as $row) {
-			      
-			     array_push($data_find,$row);
-			     if($row->car_topic_en==null){
-				 	array_push($data_null,$row);
-				 }
-			      }
+			    foreach($query2->result() as $row) {			      
+				    array_push($data_find,$row);
+				    if($row->car_topic_en==null){
+					 	array_push($data_null,$row);
+					}
+			     }
 			}
 			
-				$car_topic = array();
+		
+
+		$car_topic = array();		
 		$car_topic_result = array();
-		$sub = array();
+		$sub = array();		
+		$datatopic = array();
 		
 		foreach($data_find as $key=>$row){
-			array_push($car_topic,$row->car_topic_en);
-				
-			}
+				array_push($car_topic,$row->car_topic_en);	
+		}
 		$num_cartype = array_unique($car_topic);	
 		
 		$car_topic_lang = array('en','cn','th');
 
-		foreach ($car_topic_lang as $key=>$value){
-			
+				
 			foreach($data_find as $key2=>$row){
-				
-				if($value=="en"){
-					$sub[$key2] = $row->car_topic_en;
-				}else if($value=="cn"){
-					$sub[$key2] = $row->car_topic_cn;
-				}else if($value=="th"){
-					$sub[$key2] = $row->car_topic_th;
-				}
-				
+					$sub[$key2] = $row->pax_id;
 			}	
 	
-			$sub_unique = array_unique($sub);	
-			$q[$value] = $sub_unique;
-		}
+			$sub_unique = array_unique($sub);
+
+							
+			foreach($sub_unique as $i2=>$value2){
+					foreach($data_find as $i=>$row){
+					if ($row->pax_id == $value2 && $value2 != null) {
+						$datatopic[$i2] = $row;
+						
+					}
+				}
+			}
+
+
+
+			foreach ($car_topic_lang as $key=>$value){	
+				foreach($sub_unique as $key2=>$value2){
+					foreach($data_find as $key4=>$row){				
+						if ($row->pax_id == $value2) {
+							if($value=="en"){
+								$q[$key4] = $row->car_topic_en;
+								$subpax[$key4] = $row->pax_en;
+								
+							}else if($value=="cn"){
+								$q[$key4] = $row->car_topic_cn;
+								$subpax[$key4] = $row->pax_cn;
+								
+							}else if($value=="th"){
+								$q[$key4] = $row->car_topic_th;
+								 $subpax[$key4] = $row->pax_th;
+								
+							}
+						}
+					}	
+				}
+			}
 	
-	$final_arr = array();
-	foreach ($q as $key=>$value){
+	
 		
-		foreach($value as $key2=>$row2){
-			if($key=='en'){
-				$en[] = $row2;
-			}
-			else if($key=='cn'){
-				$cn[] = $row2;
-			}
-			else if($key=='th'){
-				$th[] = $row2;
-			}
 			
-		}
-	}
-	array_push($final_arr,$en);
-	array_push($final_arr,$cn);
-	array_push($final_arr,$th);		
-			
-$arrayname['status'] =  "202";			
-$arrayname['messge'] =  "Load Data Success";
-$arrayname['return'] =  $return;
-$arrayname['cartype'] =  $final_arr;
-$arrayname['size'] =  sizeof($data_find);
-$arrayname['data1'] =  $data_find;
-//$arrayname['typecar_null'] =  $data_null;
-			
-			$enddata = array();
-array_push($enddata,$arrayname);
+		$arrayname['status'] =  "202";			
+		$arrayname['messge'] =  "Load Data Success";
+		$arrayname['return'] =  $return;
+		$arrayname['cartype'] =  $final_arr ;
+		$arrayname['car_topic'] = $datatopic;
+		$arrayname['size'] =  sizeof($data_find);
+		$arrayname['data1'] =  $data_find;
+		//$arrayname['typecar_null'] =  $data_null;
+					
+		$enddata = array();
+		array_push($enddata,$arrayname);
 
 
-return array('status' => 200,"response"=>$enddata);		
+		return array('status' => 200,"response"=>$enddata);		
 			
 			
 //	return $data;
