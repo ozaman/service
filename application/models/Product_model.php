@@ -120,7 +120,30 @@ public function querydata2($params){
 		$this->db->where('id',$params['to']);
 		$query = $this->db->get(); 
 		$data_aum_to = $query->row()->aum;
-			
+		$check;
+		$checkfronORto;
+		$ssss ;
+		$data_find3 = array();	
+
+
+
+
+
+				foreach($data_filter1 as $key=>$data) {
+			    		if($data_filter1[$key]->place_default == $from || $data_filter1[$key]->place_default_to == $to){
+							 $check = 1;
+							 if ($data_filter1[$key]->place_default == $from and $data_filter1[$key]->place_default_to != $to) {
+							 	$checkfronORto = 'From';
+							 }
+							 if($data_filter1[$key]->place_default != $from and $data_filter1[$key]->place_default_to == $to){
+							 	$checkfronORto = 'To';							 	
+							 }
+						}
+						else{
+							$check = 0;							
+						}
+			    		
+			     }
 			
 				  //		aum_from <-> aum_to
 			  	  foreach($data_filter1 as $key=>$data) {
@@ -176,6 +199,90 @@ public function querydata2($params){
 }*/
 			
 				foreach($data_filter1 as $key=>$data){
+					
+					if($data_filter1[$key]->all_area==1 ){
+						if ($check == 0) {
+							if($data_filter1[$key]->area !="In" and $data_filter1[$key]->area!="Out"){
+							 if($data_filter1[$key]->stay==$data_pro_from and $data_filter1[$key]->stay_to==$data_pro_to){
+									if($data_filter1[$key]->aum_from==$data_aum_from or $data_filter1[$key]->aum_from==$data_aum_to){
+										array_push($data_find,$data);
+									}
+								}
+						}
+						}
+
+					}
+				}
+						// if($check == 1){
+						// 	if($data_filter1[$key]->area=="Out"){
+						// 		if(($data_filter1[$key]->stay==$data_pro_from and $data_filter1[$key]->stay_to==$data_pro_to) and ($data_filter1[$key]->place_default_to==$to and $data_filter1[$key]->place_default=="")){
+						// 			if($data_filter1[$key]->aum_from=="" or $data_filter1[$key]->aum_from==0){
+						// 					array_push($data_find3,$data);
+						// 			}
+						// 		}
+						// 	}
+						// 	if($data_filter1[$key]->area=="In"){
+						// 		if($data_filter1[$key]->stay==$data_pro_from and $data_filter1[$key]->stay_to==$data_pro_to and $data_filter1[$key]->place_default==$from and $data_filter1[$key]->place_default_to==""){
+						// 			if($data_filter1[$key]->aum_to=="" or $data_filter1[$key]->aum_from==0){
+						// 					array_push($data_find3,$data);
+						// 			}
+						// 		}					
+							
+						// 	}
+						// }
+						// if($data_filter1[$key]->area=="Out"){
+						// 		if(($data_filter1[$key]->stay==$data_pro_from and $data_filter1[$key]->stay_to==$data_pro_to) and ($data_filter1[$key]->place_default_to==$to and $data_filter1[$key]->place_default=="")){
+						// 			if($data_filter1[$key]->aum_from=="" or $data_filter1[$key]->aum_from==0){
+						// 				array_push($data_find,$data);
+						// 			}
+						// 	}
+						// }
+						// if($data_filter1[$key]->area=="In"){
+						// 	if($data_filter1[$key]->stay==$data_pro_from and $data_filter1[$key]->stay_to==$data_pro_to and $data_filter1[$key]->place_default==$from and $data_filter1[$key]->place_default_to==""){
+						// 			if($data_filter1[$key]->aum_to=="" or $data_filter1[$key]->aum_from==0){
+						// 				array_push($data_find,$data);
+						// 			}
+						// 	}
+						
+						// }
+						
+
+						/*else{
+				
+	if($data_filter1[$key]->stay==$data_pro_from and $data_filter1[$key]->stay_to==$data_pro_to and $data_filter1[$key]->place_default=="" and $data_filter1[$key]->place_default_to=="" and ($data_filter1[$key]->aum_from=="" or $data_filter1[$key]->aum_from==0) and ($data_filter1[$key]->aum_to=="" or $data_filter1[$key]->aum_to==0))
+							{
+								if($data_filter1[$key]->pier_to==$data_pier_to){
+									if($data_filter1[$key]->aum_to=="" or $data_filter1[$key]->aum_from==0){
+										array_push($data_find,$data);
+									}
+								}	
+							}
+						
+						}*/
+
+							
+							
+							
+							
+						// 	else if($data_filter1[$key]->pier_from == 1 and $data_filter1[$key]->pier_from == 1){
+						// 		if ($data_filter1[$key]->pier_from == 1 and $data_filter1[$key]->pier_to == 0) {			
+						// 			array_push($data_find,$data);
+						// 		}
+						// 		else if ($data_filter1[$key]->pier_to == 1 and $data_filter1[$key]->pier_from == 0) {			
+						// 			array_push($data_find,$data);
+						// 		}
+						// 		else{
+						// 			array_push($data_find,$data);
+						// 		}
+										
+							
+						// }	
+			
+
+				if (sizeof($data_find) == 0) {
+
+					$ssss = 1;
+					foreach($data_filter1 as $key=>$data){
 					// ($data_filter1[$key]->all_area==1 and $data_filter1[$key]->pier_from != 1) and $data_filter1[$key]->pier_to != 1)
 					if($data_filter1[$key]->all_area==1 ){
 						
@@ -194,44 +301,37 @@ public function querydata2($params){
 							}
 						
 						}
-						else if($data_filter1[$key]->area !="In" and $data_filter1[$key]->area!="Out"){
-							if($data_filter1[$key]->stay==$data_pro_from and $data_filter1[$key]->stay_to==$data_pro_to){
-									//if($data_filter1[$key]->aum_from==$data_aum_from or $data_filter1[$key]->aum_from==$data_aum_to){
-										array_push($data_find,$data);
-									}
-						}
-
-						/*else{
-				
-	if($data_filter1[$key]->stay==$data_pro_from and $data_filter1[$key]->stay_to==$data_pro_to and $data_filter1[$key]->place_default=="" and $data_filter1[$key]->place_default_to=="" and ($data_filter1[$key]->aum_from=="" or $data_filter1[$key]->aum_from==0) and ($data_filter1[$key]->aum_to=="" or $data_filter1[$key]->aum_to==0))
-							{
-								if($data_filter1[$key]->pier_to==$data_pier_to){
-									if($data_filter1[$key]->aum_to=="" or $data_filter1[$key]->aum_from==0){
-										array_push($data_find,$data);
-									}
-								}	
-							}
 						
-						}*/
-
-							
-							
-							
-							}
-						// 	else if($data_filter1[$key]->pier_from == 1 and $data_filter1[$key]->pier_from == 1){
-						// 		if ($data_filter1[$key]->pier_from == 1 and $data_filter1[$key]->pier_to == 0) {			
-						// 			array_push($data_find,$data);
-						// 		}
-						// 		else if ($data_filter1[$key]->pier_to == 1 and $data_filter1[$key]->pier_from == 0) {			
-						// 			array_push($data_find,$data);
-						// 		}
-						// 		else{
-						// 			array_push($data_find,$data);
-						// 		}
-										
-							
-						// }	
+					}
 				}
+				
+					
+				}
+				else{
+					$ssss = 0;
+				}
+				// foreach($data_filter as $key=>$data){
+				// 	if($data_filter[$key]->all_area==1 and ){
+				// 		if ($check == 0) {
+				// 			if($data_filter1[$key]->area !="In" and $data_filter1[$key]->area!="Out"){
+				// 			if($data_filter1[$key]->stay==$data_pro_from and $data_filter1[$key]->stay_to==$data_pro_to){
+				// 					if($data_filter1[$key]->aum_from==$data_aum_from or $data_filter1[$key]->aum_from==$data_aum_to){
+				// 						array_push($data_find,$data);
+				// 					}
+				// 				}
+				// 		}
+				// 		if ($check == 1) {
+							
+							
+				// 		}
+
+				// 		}
+					
+							
+							
+							
+				// 			}	
+				// }
 				
 				
 			
@@ -299,6 +399,9 @@ public function querydata2($params){
 		$arrayname['car_topic'] = $datatopic;
 		$arrayname['size'] =  sizeof($data_find);
 		$arrayname['data1'] =  $data_find;
+		$arrayname['check'] = $ssss;
+		$arrayname['data_filter3'] = $data_filter3;
+		$arrayname['checkfronORto'] =$checkfronORto ;
 
 
 			
