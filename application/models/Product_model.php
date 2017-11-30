@@ -96,6 +96,7 @@ public function querydata2($params){
 
 			$this->db->where('a.stay =',''.$data_pro_from.'');
 			$this->db->where('a.stay_to =',''.$data_pro_to.'');
+			$this->db->where('a.status =','1');
 
 			$this->db->group_by('a.id');
 			/*if($limit!=""){
@@ -179,7 +180,7 @@ public function querydata2($params){
 		$data_return['aum_from'] = $data_aum_from;
 		$data_return['aum_to'] = $data_aum_to;
 		$data_return['stay'] = $data_pro_from;
-		$data_return['stay_to'] = $data_pro_from;
+		$data_return['stay_to'] = $data_pro_to;
 		$data_return['pier_to'] = $data_pier_to;
 		$data_return['pier_from'] = $data_pier_from;
 		
@@ -212,7 +213,29 @@ public function querydata2($params){
 						}
 
 					}
+					// foreach($data_filter1 as $key=>$data){
+					// ($data_filter1[$key]->all_area==1 and $data_filter1[$key]->pier_from != 1) and $data_filter1[$key]->pier_to != 1)
+					if($data_filter1[$key]->all_area==1 ){
+						
+						if($data_filter1[$key]->area=="Out"){
+								if(($data_filter1[$key]->stay==$data_pro_from and $data_filter1[$key]->stay_to==$data_pro_to) and ($data_filter1[$key]->place_default_to==$to and $data_filter1[$key]->place_default=="")){
+									if($data_filter1[$key]->aum_from=="" or $data_filter1[$key]->aum_from==0){
+										array_push($data_find,$data);
+									}
+							}
+						}
+						else if($data_filter1[$key]->area=="In"){
+							if($data_filter1[$key]->stay==$data_pro_from and $data_filter1[$key]->stay_to==$data_pro_to and $data_filter1[$key]->place_default==$from and $data_filter1[$key]->place_default_to==""){
+									if($data_filter1[$key]->aum_to=="" or $data_filter1[$key]->aum_from==0){
+										array_push($data_find,$data);
+									}
+							}
+						
+						}
+						
+					}
 				}
+				// }
 						// if($check == 1){
 						// 	if($data_filter1[$key]->area=="Out"){
 						// 		if(($data_filter1[$key]->stay==$data_pro_from and $data_filter1[$key]->stay_to==$data_pro_to) and ($data_filter1[$key]->place_default_to==$to and $data_filter1[$key]->place_default=="")){
@@ -300,6 +323,11 @@ public function querydata2($params){
 									}
 							}
 						
+						}
+						else if(($data_filter1[$key]->stay == $data_pro_from and $data_filter1[$key]->stay_to == $data_pro_to) and $data_filter1[$key]->area == 'Point'){
+							// if($data_filter1[$key]->aum_from==$data_aum_from or $data_filter1[$key]->aum_from==$data_aum_to){
+							array_push($data_find,$data);
+						// }
 						}
 						
 					}
@@ -478,6 +506,8 @@ public function query_eachdata($id){
 			$this->db->join('web_gallerycar e', 'e.category=b.car_model', 'left');
 			$this->db->join('web_transferproduct_utf f', 'f.id=a.id', 'left');
 			$this->db->where('a.id',$id);
+			$this->db->order_by("cost_a", "asc");
+
 			$this->db->group_by('a.id');			
 			$query = $this->db->get(); 
 			
@@ -512,7 +542,9 @@ function callselect($select,$str1,$where1,$str2,$where2,$limit){
 			$this->db->join('web_transferproduct_utf f', 'f.id=a.id', 'left');
 			$this->db->where(''.$str1.'',''.$where1.'');
 			$this->db->where(''.$str2.'',''.$where2.'');
+			$this->db->order_by("cost_a", "asc");
 			$this->db->group_by('a.id');
+			
 			if($limit!=""){
 				$this->db->limit($limit); 
 			} 
@@ -621,8 +653,9 @@ public function querydata_service($params){
             left join web_province as d ON d.id = a.stay_to 
             left join web_gallerycar as e ON e.category = b.car_model 
             left join web_transferproduct_utf as f ON f.id = a.id
-            WHERE  a.stay = ".$from." and a.stay_to = ".$to." and (a.area = 'Service' or a.area = 'Service_day')
-            group by a.id ";
+
+            WHERE a.status = 1 and a.stay = ".$from." and a.stay_to = ".$to." and (a.area = 'Service' or a.area = 'Service_day')
+            group by a.id ORDER BY a.cost_a ASC ";
 			$query2 = $this->db->query($query); 
 
        		if($query2->num_rows() > 0) {
