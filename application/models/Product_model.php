@@ -99,6 +99,7 @@ public function querydata2($params){
 			$this->db->where('a.status =','1');
 
 			$this->db->group_by('a.id');
+			$this->db->order_by("a.cost_a", "asc");
 			/*if($limit!=""){
 				$this->db->limit($limit); 
 			} */
@@ -324,13 +325,17 @@ public function querydata2($params){
 							}
 						
 						}
-						else if(($data_filter1[$key]->stay == $data_pro_from and $data_filter1[$key]->stay_to == $data_pro_to) and $data_filter1[$key]->area == 'Point'){
-							// if($data_filter1[$key]->aum_from==$data_aum_from or $data_filter1[$key]->aum_from==$data_aum_to){
-							array_push($data_find,$data);
-						// }
-						}
+
 						
 					}
+					if(($data_filter1[$key]->stay == $data_pro_from and $data_filter1[$key]->stay_to == $data_pro_to) and $data_filter1[$key]->area == 'Point'and $data_filter1[$key]->all_area==1){
+							// if($data_filter1[$key]->aum_from==$data_aum_from or $data_filter1[$key]->aum_from==$data_aum_to){
+							if($data_filter1[$key]->area !="In" and $data_filter1[$key]->area!="Out"){
+							array_push($data_find,$data);
+								
+							}
+						// }
+						}
 				}
 				
 					
@@ -655,7 +660,7 @@ public function querydata_service($params){
             left join web_transferproduct_utf as f ON f.id = a.id
 
             WHERE a.status = 1 and a.stay = ".$from." and a.stay_to = ".$to." and (a.area = 'Service' or a.area = 'Service_day')
-            group by a.id ORDER BY a.cost_a ASC ";
+            group by a.id ORDER BY a.cost_a*100 ASC ";
 			$query2 = $this->db->query($query); 
 
        		if($query2->num_rows() > 0) {
