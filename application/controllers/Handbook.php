@@ -9,7 +9,7 @@ class Handbook extends CI_Controller {
   }
   public function index()
 	{
-		$this->load->view('handbook_view');
+		$this->load->view('handbook/index.html');
 	}
   
   
