@@ -149,8 +149,8 @@ if(($params['lat_f']==!"" or $params['lng_f']==!NULL) and ($params['lat_t']==!""
 		$data_find_all['detail'] = $detail;			
 
 				 return array('status' => 200,"response"=>$data_find_all);*/
-		$data_find_all['data1'] = $place;
-		$enddata = array();
+				 $data_find_all['data1'] = $place;
+				$enddata = array();
 		array_push($enddata,$data_find_all);
 
 
