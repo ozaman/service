@@ -20,7 +20,8 @@ public function index()
 		}*/
 		$params = json_decode(file_get_contents('php://input'), TRUE);
 		$data = $this->Tour_model->queryData($params);
-		echo json_encode($data);
+//		echo json_encode($data);
+		json_output($data['status'],$data['response']);
 		
 	}
 

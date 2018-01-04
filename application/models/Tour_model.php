@@ -43,18 +43,41 @@ class Tour_model extends CI_Model {
 			$this->db->join('web_admin tbl_web_admin', 'tbl_web_product.company=tbl_web_admin.id', 'left');
 			$this->db->join('web_province tbl_province', 'tbl_web_product.province=tbl_province.id', 'left');
 		 	$this->db->where('tbl_web_product.onsale_enable =','1');
-		 	$this->db->where('tbl_web_product.type = ',''.$pd_type.'');
+		 	$this->db->where('tbl_web_product.type like ',''.$pd_type.'');
 		 	$query = $this->db->get(); 
-		 if($query->num_rows() > 0) {
-		 	 foreach($query->result() as $row){
-        	
-				$data[] = $row;
+		 	if($query->num_rows() > 0) {
+		 	 foreach($query->result() as $row){	
+				$data_query[] = $row;
+				}
+				$status = '202';
+				$messge = "Load Data Success";
+			 }else{
+			 		$data = false;
+			 		$status = '404';
+			 		$messge = "No data row";
+			 }
+		 	
+		 	$this->db->select('t1.province as,t2.name_th,t2.name,t2.name_cn');
+		 	$this->db->from('web_product t1'); 
+		 	$this->db->join('web_province t2', 't1.province=t2.id', 'left');
+		 	$this->db->where('t1.onsale_enable =','1');
+		 	$this->db->where('t1.type like ',''.$pd_type.'');
+      		$this->db->group_by('t1.province');
+      		$query2 = $this->db->get(); 
+
+      		foreach($query2->result() as $row){  	
+				$pv[] = $row;
 			}
-		 }else{
-		 	$data = 'false';
-		 }
-      	
-			return $data;
+			
+			$data['status'] = $status;
+      		$data['messge'] =  $messge;
+      		$data['size'] =  sizeof($query->result());	
+      		$data['province'] = $pv;
+      		$data['data'] = $data_query;
+      		$data['params'] = $param;
+//			return $data;
+			
+			return array('status' => 200,"response"=>$data);
 		
 	}
 
