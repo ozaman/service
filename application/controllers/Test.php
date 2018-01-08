@@ -11,11 +11,12 @@ public function index()
 	{
 		//$params = json_decode(file_get_contents('php://input'), TRUE);
 		
-			$data['results'] = $this->Test_model->loaddata();
+//			$data['results'] = $this->Test_model->loaddata();
 		
 		//echo $data['results'];
 		//$data['code'] = $params['code'];
-		$this->load->view('service_view',$data);
+//		$this->load->view('service_view',$data);
+echo 55555;
 	}
 	
 	public function test_fnc()

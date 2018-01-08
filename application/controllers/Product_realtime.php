@@ -36,6 +36,7 @@ public function findPlaceId()
 		if(isset($params)){
 		
 			$resp = $this->Product_realtime_model->getPlaceId($params);
+//			$resp['status'] = '202';
 //			json_output($resp['status'],$resp['response']);
 			echo json_encode($resp);
 				

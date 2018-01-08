@@ -12,11 +12,11 @@ public function index()
 	{
 		$params = json_decode(file_get_contents('php://input'), TRUE);
 		
-			$data['results'] = $this->Service_model->loaddata($params);
-		
-		
+			$data['response'] = $this->Service_model->loaddata($params);
+			$data['status'] = '202';
+		json_output($data['status'],$data['response']);
 		//$data['code'] = $params['code'];
-		$this->load->view('service_view',$data);
+//		$this->load->view('service_view',$data);
 	}
 	
 	public function sub_product()
@@ -34,20 +34,22 @@ public function index()
 	{
 		$params = json_decode(file_get_contents('php://input'), TRUE);
 		
-			$data['results'] = $this->Service_model->get_place($params);
-		
-		//$data['code'] = $params['code'];
-		$this->load->view('service_view',$data);
+			$data['response'] = $this->Service_model->get_place($params);
+			$data['status'] = '202';
+			json_output($data['status'],$data['response']);
+			//$data['code'] = $params['code'];
+			//$this->load->view('service_view',$data);
 	}
 	
 	public function search_keyword()
 	{
 		$params = json_decode(file_get_contents('php://input'), TRUE);
 		
-		$data['results'] = $this->Service_model->search($params);
-		
+		$data['response'] = $this->Service_model->search($params);
+		$data['status'] = '202';
+		json_output($data['status'],$data['response']);
 		//$data['code'] = $params['code'];
-		$this->load->view('service_view',$data);
+//		$this->load->view('service_view',$data);
 	}
 
 

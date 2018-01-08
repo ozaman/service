@@ -73,12 +73,9 @@ class Service_model extends CI_Model {
  
 }
 
-	function table_exists($table_name)
-{
+	function table_exists($table_name){
     return ( ! in_array($this->_protect_identifiers($table_name, TRUE, FALSE, FALSE), $this->list_tables())) ? FALSE : TRUE;
 }
-
-
 
 	public function get_place($params){
 	$field = array("place.id","place.topic","pro.name","aum.name","place.address");
@@ -128,7 +125,6 @@ class Service_model extends CI_Model {
 	
 }
 
-
 	public function search($params){
 	 
 	 
@@ -138,8 +134,8 @@ if(isset($params['like'])){
 		
 		
 		$query = $this->db->query("select id,aum,pro,topic,address,latitude,longitude FROM web_transferplace_new
-WHERE topic LIKE  '%".$value2."%' and status = 1
-ORDER BY LOCATE(  '".$value2."' , topic )   ");
+		WHERE topic LIKE  '%".$value2."%' and status = 1
+		ORDER BY LOCATE(  '".$value2."' , topic )   ");
 		
 		/*$this->db->select('id,aum,pro,topic,address,latitude,longitude');	
 		$this->db->like('topic', ''.$value2.'');
@@ -148,18 +144,18 @@ ORDER BY LOCATE(  '".$value2."' , topic )   ");
   	 	 $query = $this->db->from('web_transferplace_new')->get();*/
   	 	 
   	 	 
-  	 if($query->num_rows() > 0) {
-      foreach($query->result() as $row) {
-        $data[] = $row;
-      }
-      
-      return $data;
-    }
-     else{
-    	$response['status'] = '402';
-    	$response['m'] = 'no record';
- 		return $response;	
-	}
+	  	 if($query->num_rows() > 0) {
+	      foreach($query->result() as $row) {
+	        $data[] = $row;
+	      }
+	      
+	      return $data;
+	    }
+	     else{
+	    	$response['status'] = '402';
+	    	$response['m'] = 'no record';
+	 		return $response;	
+		}
 
 	
 }else{

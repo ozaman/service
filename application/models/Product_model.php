@@ -427,14 +427,15 @@ public function querydata2($params){
 			
 		$arrayname['status'] =  "202";			
 		$arrayname['messge'] =  "Load Data Success";
-		$arrayname['return'] =  $return;
-		$arrayname['cartype'] =  $final_arr ;
+		$arrayname['return'] =  $data_return;
+//		$arrayname['cartype'] =  $final_arr ;
+
 		$arrayname['car_topic'] = $datatopic;
 		$arrayname['size'] =  sizeof($data_find);
 		$arrayname['data1'] =  $data_find;
-		$arrayname['check'] = $ssss;
-		$arrayname['data_filter3'] = $data_filter3;
-		$arrayname['checkfronORto'] =$checkfronORto ;
+		
+//		$arrayname['check'] = $ssss;
+//		$arrayname['checkfronORto'] =$checkfronORto ;
 
 
 			
@@ -762,16 +763,7 @@ if($lng=="en"){
 }else if($lng=="cn"){
 	$sort = "b.name_cn";
 }		
-/*$this->db->select('a.stay_to,b.name,b.name_cn,b.name_th,b.code');
-$this->db->from('web_transferproduct a'); 
-$this->db->join('web_province b', 'b.id=a.stay_to', 'left');
-$this->db->where('a.stay',''.$stay.'');
-$this->db->where('(a.area = "Service" OR a.area = "Service_day")');
-//$this->db->or_where('a.area','Service_day');
-$this->db->order_by($sort, "asc");
-$this->db->group_by('stay_to');
 
-$query = $this->db->get();*/
 //
 $query  =   "SELECT a.stay_to,b.name,b.name_cn,b.name_th,b.code
             FROM web_transferproduct as a left join
@@ -822,16 +814,6 @@ if($lng=="en"){
 }else if($lng=="cn"){
 	$sort = "b.name_cn";
 }	
-/*$this->db->select('a.stay,b.name,b.name_cn,b.name_th,b.code');
-$this->db->from('web_transferproduct a'); 
-$this->db->join('web_province b', 'b.id=a.stay', 'left');
-$this->db->where('(a.area = "Service" OR a.area = "Service_day")');
-//$this->db->where('a.stay','1');
-$this->db->group_by('a.stay');
-
-
-$this->db->order_by($sort, "asc");
-$query = $this->db->get();*/
 
 $query  =   "SELECT a.stay,b.name,b.name_cn,b.name_th,b.code,a.area
             FROM web_transferproduct as a 
