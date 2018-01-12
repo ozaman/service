@@ -32,6 +32,17 @@ public function get_each()
 		$data = $this->Tour_model->query_each_data($params);
 		json_output($data['status'],$data['response']);
 	}
+	public function product_province_from()
+	{
+		
+		$params = json_decode(file_get_contents('php://input'), TRUE);
+		
+		
+					$resp = $this->Tour_model->getprofrom($params);
+					json_output($resp['status'],$resp['response']);
+	
+		
+	}
 
 
 }

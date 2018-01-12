@@ -206,6 +206,58 @@ class Tour_model extends CI_Model {
 			return array('status' => 200,"response"=>$data);
 		
 	}
+	public function getprofrom($params){
+	
+if(isset($params)){
+	$lng = $params['lng'];
+}else{
+	$lng = 'en';
+}
+	
+
+if($lng=="en"){
+	$sort = "b.name";
+}else if($lng=="th"){
+	$sort = "b.name_th";
+}else if($lng=="cn"){
+	$sort = "b.name_cn";
+}	
+
+$query  =   "SELECT a.province,b.name,b.name_cn,b.name_th,b.code,a.area
+            FROM web_product as a 
+            left join web_province as b             
+            ON b.id = a.province
+
+            WHERE  (a.status = '1')
+            group by a.province 
+            order by REPLACE(".$sort.", ' ', '') asc";
+            
+$query = $this->db->query($query);  
+
+$data_find_stayfrom = array();
+			if($query->num_rows() > 0) {
+			   foreach($query->result() as $row) {
+			     array_push($data_find_stayfrom,$row);
+			   }
+			}else{
+				$data_find_stayfrom = "false";
+			}
+			
+$arrayname['status'] =  "202";			
+$arrayname['messge'] =  "Load Data Success";
+$arrayname['size'] =  sizeof($data_find_stayfrom);
+$arrayname['data1'] =  $data_find_stayfrom;
+$arrayname['lng'] =  $lng;
+
+$enddata = array();
+array_push($enddata,$arrayname);
+
+
+return array('status' => 200,"response"=>$enddata);		
+	}
+	
+	
+
 	
 } 
 
