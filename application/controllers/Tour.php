@@ -43,6 +43,17 @@ public function get_each()
 	
 		
 	}
+	public function product_type()
+	{
+		
+		$params = json_decode(file_get_contents('php://input'), TRUE);
+		
+		
+					$resp = $this->Tour_model->getDatatype($params);
+					json_output($resp['status'],$resp['response']);
+	
+		
+	}
 
 
 }

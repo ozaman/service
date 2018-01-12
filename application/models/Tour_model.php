@@ -47,7 +47,7 @@ class Tour_model extends CI_Model {
 			$this->db->join('web_product_utf tbl_web_product_utf', 'tbl_web_product.id=tbl_web_product_utf.id', 'left');
 			$this->db->join('web_admin tbl_web_admin', 'tbl_web_product.company=tbl_web_admin.id', 'left');
 			$this->db->join('web_province tbl_province', 'tbl_web_product.province=tbl_province.id', 'left');
-		 	$this->db->where('tbl_web_product.onsale_enable =','1');
+		 	// $this->db->where('tbl_web_product.onsale_enable =','1');
 		 	if($pd_type!=""){
 		 	$this->db->where('tbl_web_product.type like ',''.$pd_type.'');
 			}
@@ -67,7 +67,7 @@ class Tour_model extends CI_Model {
 		 	$this->db->select('t1.province as,t2.name_th,t2.name,t2.name_cn');
 		 	$this->db->from('web_product t1'); 
 		 	$this->db->join('web_province t2', 't1.province=t2.id', 'left');
-		 	$this->db->where('t1.onsale_enable =','1');
+		 	// $this->db->where('t1.onsale_enable =','1');
 		 	if($pd_type!=""){
 				$this->db->where('t1.type like ',''.$pd_type.'');
 			}
@@ -229,7 +229,7 @@ $query  =   "SELECT a.province,b.name,b.name_cn,b.name_th,b.code,a.area
             ON b.id = a.province
 
             WHERE  (a.status = '1')
-            group by a.province 
+            group by a.province
             order by REPLACE(".$sort.", ' ', '') asc";
             
 $query = $this->db->query($query);  
@@ -255,6 +255,102 @@ array_push($enddata,$arrayname);
 
 return array('status' => 200,"response"=>$enddata);		
 	}
+
+	public function getDatatype($param) {
+		 $select = array(
+		 'tbl_web_product.topic', 
+		//'tbl_web_product.detail_en', 
+		//'tbl_web_product.detail_cn',
+		//'tbl_web_product.detail_th', 
+		'tbl_web_product.cost_a_agent_all',
+		'tbl_web_product.cost_b_agent_all', 
+		'tbl_web_product.type', 
+		//'tbl_web_product.topic_en_web as topic_en',
+		//'tbl_web_product.topic_cn_web as topic_cn',
+		//'tbl_web_product.topic_th_web as topic_th',
+		'tbl_web_product_utf.topic_th as topic_th' ,
+		'tbl_web_product_utf.topic_cn as topic_cn' ,
+		'tbl_web_product_utf.topic_en as topic_en' ,
+		'tbl_web_product.onsale_front', 
+		'tbl_web_product.onsale_enable', 
+		'tbl_web_product.onsale_promotion', 
+		'tbl_web_product.onsale_top',
+		'tbl_web_product.image_crop',
+		'tbl_web_product.id',
+		'tbl_web_product.round_en',
+		'tbl_web_product.province',
+		'tbl_web_product.open_Sun',
+		'tbl_web_product.open_Mon', 
+		'tbl_web_product.open_Tue',
+		'tbl_web_product.open_Wed',
+		'tbl_web_product.open_Thu',
+		'tbl_web_product.open_Fri',
+		'tbl_web_product.open_Sat',
+		'tbl_web_admin.company',
+		'tbl_web_product.province');
+		// 'tbl_province.name_th as province_name');
+
+		  	$pd_type = $param[pro];
+		  	foreach ($select as $key => $value){
+				$this->db->select($value);
+			}	
+			
+			$this->db->from('web_product tbl_web_product'); 
+			$this->db->join('web_product_utf tbl_web_product_utf', 'tbl_web_product.id=tbl_web_product_utf.id', 'left');
+			$this->db->join('web_admin tbl_web_admin', 'tbl_web_product.company=tbl_web_admin.id', 'left');
+			// $this->db->join('web_province tbl_province', 'tbl_web_product.province=tbl_province.id', 'left');
+		 	// $this->db->where('tbl_web_product.onsale_enable =','1');
+		 	if($pd_type!=""){
+		 	$this->db->where('tbl_web_product.province = ',''.$pd_type.'');
+			}
+			$type = array();	
+		 	$query = $this->db->get(); 
+		 	if($query->num_rows() > 0) {
+		 	 foreach($query->result() as $row){	
+				$data_query[] = $row;
+				if($row->type != '')
+				{
+					array_push($type,$row->type);	
+				}
+				
+				
+				}
+				$status = '202';
+				$messge = "Load Data Success";
+			 }else{
+			 		$data_query[] = false;
+			 		$status = '404';
+			 		$messge = "No data row";
+			 }
+			 $num_cartype = array_unique($type);
+		 	
+		 	// $this->db->select('t1.province as,t2.name_th,t2.name,t2.name_cn');
+		 	// $this->db->from('web_product t1'); 
+		 	// $this->db->join('web_province t2', 't1.province=t2.id', 'left');
+		 	// $this->db->where('t1.onsale_enable =','1');
+		 // 	if($pd_type!=""){
+			// 	$this->db->where('t1.type like ',''.$pd_type.'');
+			// }
+		 	
+   //    		$this->db->group_by('t1.province');
+   //    		$query2 = $this->db->get(); 
+
+   //    		foreach($query2->result() as $row){  	
+			// 	$pv[] = $row;
+			// }
+			
+			$data['status'] = $status;
+      		$data['messge'] =  $messge;
+      		$data['size'] =  sizeof($query->result());	
+      		$data['type'] = $num_cartype;
+      		$data['data'] = $data_query;
+      		$data['params'] = $param;
+//			return $data;
+			
+			return array('status' => 200,"response"=>$data);
+		
+	}
+
 	
 	
 
