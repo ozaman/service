@@ -13,6 +13,7 @@ class Tour_model extends CI_Model {
 		'tbl_web_product.cost_a_agent_all',
 		'tbl_web_product.cost_b_agent_all', 
 		'tbl_web_product.type', 
+		'tbl_web_product.code', 
 		//'tbl_web_product.topic_en_web as topic_en',
 		//'tbl_web_product.topic_cn_web as topic_cn',
 		//'tbl_web_product.topic_th_web as topic_th',
@@ -139,15 +140,20 @@ class Tour_model extends CI_Model {
 		return array('status' => 200,"response"=>$data);
 	}
 
+
+
+
 	public function query_each_data($param) {
 		 $select = array(
 		 'tbl_web_product.topic', 
+		 'tbl_web_product.in_transfer', 
 		//'tbl_web_product.detail_en', 
 		//'tbl_web_product.detail_cn',
 		//'tbl_web_product.detail_th', 
 		'tbl_web_product.cost_a_agent_all',
 		'tbl_web_product.cost_b_agent_all', 
 		'tbl_web_product.type', 
+		'tbl_web_product.code', 
 		//'tbl_web_product.topic_en_web as topic_en',
 		//'tbl_web_product.topic_cn_web as topic_cn',
 		//'tbl_web_product.topic_th_web as topic_th',
@@ -176,8 +182,7 @@ class Tour_model extends CI_Model {
 		  	$id = $param[id];
 		  	foreach ($select as $key => $value){
 				$this->db->select($value);
-			}	
-			
+			}			
 			$this->db->from('web_product tbl_web_product'); 
 			$this->db->join('web_product_utf tbl_web_product_utf', 'tbl_web_product.id=tbl_web_product_utf.id', 'left');
 			$this->db->join('web_admin tbl_web_admin', 'tbl_web_product.company=tbl_web_admin.id', 'left');
@@ -259,12 +264,12 @@ return array('status' => 200,"response"=>$enddata);
 	public function getDatatype($param) {
 		 $select = array(
 		 'tbl_web_product.topic', 
-		//'tbl_web_product.detail_en', 
+		'tbl_web_product.in_transfer', 
 		//'tbl_web_product.detail_cn',
 		//'tbl_web_product.detail_th', 
 		'tbl_web_product.cost_a_agent_all',
 		'tbl_web_product.cost_b_agent_all', 
-		'tbl_web_product.type', 
+		'tbl_web_product.type',
 		//'tbl_web_product.topic_en_web as topic_en',
 		//'tbl_web_product.topic_cn_web as topic_cn',
 		//'tbl_web_product.topic_th_web as topic_th',
