@@ -13,7 +13,10 @@ class Handbook extends CI_Controller {
 
 //		 echo 123;
 	}
-  
+   public function ttt()
+	{
+		echo 5555;
+	}
   
  }
 ?>

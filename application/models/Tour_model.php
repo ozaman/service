@@ -140,9 +140,6 @@ class Tour_model extends CI_Model {
 		return array('status' => 200,"response"=>$data);
 	}
 
-
-
-
 	public function query_each_data($param) {
 		 $select = array(
 		 'tbl_web_product.topic', 
@@ -211,29 +208,36 @@ class Tour_model extends CI_Model {
 			return array('status' => 200,"response"=>$data);
 		
 	}
+
 	public function getprofrom($params){
 	
-if(isset($params)){
-	$lng = $params['lng'];
-}else{
-	$lng = 'en';
-}
-	
+		if(isset($params)){
+			$lng = $params['lng'];
+			
+		}else{
+			$lng = 'en';
+		}
+			
 
-if($lng=="en"){
-	$sort = "b.name";
-}else if($lng=="th"){
-	$sort = "b.name_th";
-}else if($lng=="cn"){
-	$sort = "b.name_cn";
-}	
-
-$query  =   "SELECT a.province,b.name,b.name_cn,b.name_th,b.code,a.area
+		if($lng=="en"){
+			$sort = "b.name";
+		}else if($lng=="th"){
+			$sort = "b.name_th";
+		}else if($lng=="cn"){
+			$sort = "b.name_cn";
+		}	
+		
+		if($params['area']!=""){
+			$where_area = 'and b.area = "'.$params['area'].'" ';
+		}
+		
+$query  =   "SELECT a.province,b.name,b.name_cn,b.name_th,b.code,a.area,b.area
             FROM web_product as a 
             left join web_province as b             
             ON b.id = a.province
 
             WHERE  (a.status = '1')
+            ".$where_area."
             group by a.province
             order by REPLACE(".$sort.", ' ', '') asc";
             
@@ -253,6 +257,7 @@ $arrayname['messge'] =  "Load Data Success";
 $arrayname['size'] =  sizeof($data_find_stayfrom);
 $arrayname['data1'] =  $data_find_stayfrom;
 $arrayname['lng'] =  $lng;
+$arrayname['area'] =  $params['area'];
 
 $enddata = array();
 array_push($enddata,$arrayname);

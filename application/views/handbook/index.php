@@ -319,7 +319,7 @@
 	<span class="token selector">"lat_f"</span><span class="token punctuation">:</span><span class="token atrule">"7.886645743483469"</span><span class="token punctuation">,</span><span class="token comment" spellcheck="true">/* latitude from place */</span> 
 	<span class="token selector">"lng_f"</span><span class="token punctuation">:</span><span class="token atrule">"98.42643588781357"</span><span class="token punctuation">,</span><span class="token comment" spellcheck="true">/* longitude from place */</span> 
 	<span class="token selector">"lat_t"</span><span class="token punctuation">:</span><span class="token atrule">"7.891970015092479"</span><span class="token punctuation">,</span><span class="token comment" spellcheck="true">/* latitude to place */</span> 
-	<span class="token selector">"lat_f"</span><span class="token punctuation">:</span><span class="token atrule">"98.36815685033798"</span><span class="token punctuation">,</span><span class="token comment" spellcheck="true">/* longitude to place */</span> 
+	<span class="token selector">"lng_t"</span><span class="token punctuation">:</span><span class="token atrule">"98.36815685033798"</span><span class="token punctuation">,</span><span class="token comment" spellcheck="true">/* longitude to place */</span> 
 <span class="token punctuation">}</span></code></pre>
                                     </div>
                                     </div> 

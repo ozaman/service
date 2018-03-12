@@ -18,6 +18,8 @@ public function index()
 //			json_output($resp['status'],$resp['response']);
 			//$fromto = json_encode($resp);
 			//echo $fromto;
+//			echo json_encode($resp);
+
 			json_output($resp['status'],$resp['response']);
 			//$resp2 = $this->Product_model->querydata2($resp);
 			//echo json_encode($resp2[response][0]);
