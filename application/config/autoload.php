@@ -144,3 +144,4 @@ function json_output($statusHeader,$response)
 		$ci->output->set_status_header($statusHeader);
 		$ci->output->set_output(json_encode($response));
 	}
+$autoload['model'] = array('Main_model');

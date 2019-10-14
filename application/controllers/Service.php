@@ -51,6 +51,7 @@ public function index()
 		//$data['code'] = $params['code'];
 //		$this->load->view('service_view',$data);
 	}
+       
 
 
   //////////////////////////// End

@@ -83,3 +83,9 @@ defined('EXIT_USER_INPUT')     OR define('EXIT_USER_INPUT', 7); // invalid user 
 defined('EXIT_DATABASE')       OR define('EXIT_DATABASE', 8); // database error
 defined('EXIT__AUTO_MIN')      OR define('EXIT__AUTO_MIN', 9); // lowest automatically-assigned error code
 defined('EXIT__AUTO_MAX')      OR define('EXIT__AUTO_MAX', 125); // highest automatically-assigned error code
+
+// define DATABASE
+define('TBL_WEB_PRODUCT_UTF', 'web_product_utf');
+define('TBL_WEB_PRODUCT', 'web_product');
+define('TBL_IMG', 'tbl_img');
+define('TBL_WEB_TRANSFERPRODUCT', 'web_transferproduct');
